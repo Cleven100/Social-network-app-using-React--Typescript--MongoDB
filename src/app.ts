@@ -1,12 +1,20 @@
-import express, { application, Express } from 'express'; 
-
+import express, { Express } from 'express'; 
 import { FiveServer } from './setupServer';
+import databaseConnection from './setupDatabase';
+import { config } from './config';
+
+
 
 class Application {
     public initialize(): void {
-        const app: Express = express();
+        this.loadConfig();
+        databaseConnection();
+        const app: Express = express();       
         const server: FiveServer = new FiveServer(app);
         server.start();
+    }
+    private loadConfig(): void {
+         config.validateConfig();
     }
 }
 
